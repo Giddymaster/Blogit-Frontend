@@ -50,7 +50,7 @@ function Navbar() {
           </Box>
 
           <Box sx={{ display: "flex", gap: 1 }}>
-            <Button color="inherit" component={Link} to="/login">
+            <Button variant="outlined" sx={{ borderColor: "black", color: "black" }} component={Link} to="/login">
               Login
             </Button>
             <Button

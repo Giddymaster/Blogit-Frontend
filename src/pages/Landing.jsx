@@ -11,17 +11,18 @@ import { Link } from "react-router-dom";
 
 function Landing() {
   return (
-    <Paper sx={{ width: "95vw" }}>
+    <Paper sx={{ width: "100vw" }}>
       <Navbar />
 
       <Container maxWidth="md" sx={{ my: 4, textAlign: "center" }}>
         <Typography variant="h2" gutterBottom>
-          Stay Curious.
+        Create, collaborate, and scale your blogs and docs.
+        
         </Typography>
         <Typography variant="h5" gutterBottom>
           Discover stories, thinking, and expertise from writers on any topic.
         </Typography>
-        <Button variant="contained" size="large" component={Link} to="/">
+        <Button variant="contained" size="large" component={Link} to="/signup">
           Start Reading
         </Button>
       </Container>
