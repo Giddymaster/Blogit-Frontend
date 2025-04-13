@@ -18,14 +18,14 @@ function Login() {
   const navigate = useNavigate();
   const setUserInformation = useUserStore((state) => state.setUserInformation);
 
-  const [username, setUsername] = useState("");
+  const [identifier, setidentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const mutation = useMutation({
+  const {isPending, mutate} = useMutation({
     mutationFn: async () => {
       const res = await axios.post("http://localhost:4000/login", {
-        username,
+        identifier,
         password,
       });
       return res.data;
@@ -35,7 +35,7 @@ function Login() {
         setUserInformation(data.user);
         navigate("/");
       } else {
-        setError(data.message || "Wrong username or password");
+        setError(data.message || "Wrong emailAddress or password");
       }
     },
     onError: (error) => {
@@ -47,10 +47,10 @@ function Login() {
     },
   });
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e){
     e.preventDefault();
     setError("");
-    mutation.mutate();
+    mutate();
   };
 
   return (
@@ -83,10 +83,10 @@ function Login() {
 
           <TextField
             fullWidth
-            label="Username"
+            label="username or email address"
             margin="normal"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={identifier}
+            onChange={(e) => setidentifier(e.target.value)}
             required
           />
 
@@ -110,10 +110,10 @@ function Login() {
             variant="contained"
             fullWidth
             type="submit"
-            disabled={mutation.isPending}
+            disabled={isPending}
             sx={{ mt: 3, py: 1.5 }}
           >
-            {mutation.isPending ? <CircularProgress size={24} /> : "Login"}
+            {isPending ? <CircularProgress size={24} /> : "Login"}
           </Button>
         </Paper>
       </Box>
