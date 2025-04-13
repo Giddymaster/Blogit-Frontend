@@ -5,25 +5,53 @@ import {
   Typography,
   Paper,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+import useUserStore from "../store/useStore";
 
 function Login() {
   const navigate = useNavigate();
+  const setUserInformation = useUserStore((state) => state.setUserInformation);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const res = await axios.post("http://localhost:4000/login", {
+        username,
+        password,
+      });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      if (data.user) {
+        setUserInformation(data.user);
+        navigate("/");
+      } else {
+        setError(data.message || "Wrong username or password");
+      }
+    },
+    onError: (error) => {
+      if (error.response) {
+        setError(error.response.data.message || "Login failed");
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    },
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (username === "admin" && password === "password") {
-      navigate("/landing");
-    } else {
-      setError("Invalid username or password");
-    }
+    setError("");
+    mutation.mutate(); 
   };
 
   return (
@@ -83,9 +111,10 @@ function Login() {
             variant="contained"
             fullWidth
             type="submit"
+            disabled={mutation.isPending}
             sx={{ mt: 3, py: 1.5 }}
           >
-            Login
+            {mutation.isPending ? <CircularProgress size={24} /> : "Login"}
           </Button>
         </Paper>
       </Box>
