@@ -71,129 +71,130 @@ function SignUp() {
     mutate();
   };
 
-  return (    
-       
-        <Paper
-          component="form"
-          onSubmit={handleSubmit}
-          elevation={4}
-          sx={{
-            p: 4,
-            borderRadius: 3,
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            width:"100vw",
-            backgroundColor: "#fff",
-          }}
-        >
-           <Navbar />
-          <Typography variant="h4" component="h1" textAlign="center" mb={1}>
-            Welcome to BlogIt.
-          </Typography>
-          <Typography variant="subtitle1" textAlign="center" mb={3}>
-            Sign up to read more blogs and publish captivating stories.
-          </Typography>
-          <Box display="flex"
+  return (
+    <Paper
+      component="form"
+      onSubmit={handleSubmit}
+      elevation={4}
+      sx={{
+        p: 4,
+        borderRadius: 3,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        width: "100vw",
+        backgroundColor: "#fff",
+      }}
+    >
+      <Navbar />
+      <Typography variant="h4" component="h1" textAlign="center" mb={1}>
+        Welcome to BlogIt.
+      </Typography>
+      <Typography variant="subtitle1" textAlign="center" mb={3}>
+        Sign up to read more blogs and publish captivating stories.
+      </Typography>
+      <Box
+        display="flex"
         justifyContent="center"
         alignItems="center"
         flexDirection="column"
-        width={600}>
-          <TextField
-            label="First Name"
-            variant="outlined"
-            fullWidth
-            required
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <TextField
-            label="Last Name"
-            variant="outlined"
-            fullWidth
-            required
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <TextField
-            label="Email Address"
-            variant="outlined"
-            fullWidth
-            required
-            value={emailAddress}
-            onChange={(e) => setEmailAddress(e.target.value)}
-          />
-          <TextField
-            label="Username"
-            variant="outlined"
-            fullWidth
-            required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+        width={600}
+      >
+        <TextField
+          label="First Name"
+          variant="outlined"
+          fullWidth
+          required
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <TextField
+          label="Last Name"
+          variant="outlined"
+          fullWidth
+          required
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <TextField
+          label="Email Address"
+          variant="outlined"
+          fullWidth
+          required
+          value={emailAddress}
+          onChange={(e) => setEmailAddress(e.target.value)}
+        />
+        <TextField
+          label="Username"
+          variant="outlined"
+          fullWidth
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
 
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <OutlinedInput
-              id="password"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword} edge="end">
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
-              required
-            />
-          </FormControl>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <OutlinedInput
+            id="password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={handleShowPassword} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+            required
+          />
+        </FormControl>
 
-          <FormControl fullWidth variant="outlined">
-            <InputLabel htmlFor="confirm-password">Confirm Password</InputLabel>
-            <OutlinedInput
-              id="confirm-password"
-              type={showconfirmedPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton onClick={handleshowconfirmedPassword} edge="end">
-                    {showconfirmedPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Confirm Password"
-              required
-            />
-          </FormControl>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel htmlFor="confirm-password">Confirm Password</InputLabel>
+          <OutlinedInput
+            id="confirm-password"
+            type={showconfirmedPassword ? "text" : "password"}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton onClick={handleshowconfirmedPassword} edge="end">
+                  {showconfirmedPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Confirm Password"
+            required
+          />
+        </FormControl>
 
-          {error && (
-            <Alert variant="filled" severity="error">
-              {error}
-            </Alert>
-          )}
+        {error && (
+          <Alert variant="filled" severity="error">
+            {error}
+          </Alert>
+        )}
 
-          <Button
-            variant="contained"
-            fullWidth
-            type="submit"
-            disabled={isPending}
-            sx={{ py: 1.5, mt: 1 }}
-          >
-            {isPending ? "Please wait ..." : "Sign Up"}
+        <Button
+          variant="contained"
+          fullWidth
+          type="submit"
+          disabled={isPending}
+          sx={{ py: 1.5, mt: 1 }}
+        >
+          {isPending ? "Please wait ..." : "Sign Up"}
+        </Button>
+
+        <Typography textAlign="center" mt={2}>
+          Already have an account?{" "}
+          <Button component={Link} to="/login" size="small">
+            Login
           </Button>
-
-          <Typography textAlign="center" mt={2}>
-            Already have an account?{" "}
-            <Button component={Link} to="/login" size="small">
-              Login
-            </Button>
-          </Typography>
-          </Box>
-        </Paper>     
+        </Typography>
+      </Box>
+    </Paper>
   );
 }
 

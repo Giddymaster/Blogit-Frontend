@@ -17,8 +17,8 @@ const useUserStore = create(
     }),
     {
       name: "local-storage", // localStorage key
-    }
-  )
+    },
+  ),
 );
 
 export default useUserStore;

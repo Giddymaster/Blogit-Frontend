@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import bgImg from "../assets/bg.jpeg";
 
-function Landing() {
+function Blogs() {
   return (
     <Paper
     sx={{
@@ -19,26 +19,13 @@ function Landing() {
     >
       <Navbar />
 
-      <Container maxWidth="md" sx={{ my: 4, textAlign: "center" }}>
-        <Typography variant="h1" gutterBottom>
-          Create, collaborate, and scale your blogs and docs.
-        </Typography>
-        <Typography variant="h4" gutterBottom>
-          Discover stories, thinking, and expertise from writers on any topic.
-        </Typography>
-        <ButtonGroup variant="text" aria-label="Large button group" sx={{ marginTop: 5 }} color="white">
-  <Button sx={{ px: 4, py: 2, fontSize: "2rem", fontWeight: 600 }}>Read</Button>
-  <Button sx={{ px: 4, py: 2, fontSize: "2rem", fontWeight: 600 }}>Write</Button>
-  <Button sx={{ px: 4, py: 2, fontSize: "2rem", fontWeight: 600 }}>Publish</Button>
-</ButtonGroup>
-
-      </Container>
-
-      {/* <Container maxWidth="lg">
+      <Container maxWidth="lg">
         <Typography variant="h4" gutterBottom>
           Trending on BlogIt
         </Typography>
 
+        
+
         <Paper elevation={3} sx={{ p: 2 }}>
           <Typography variant="subtitle2">Author Name</Typography>
           <Typography variant="h6">Sample Blog Post </Typography>
@@ -67,9 +54,9 @@ function Landing() {
             5 min read
           </Typography>
         </Paper>
-      </Container> */}
+      </Container>
     </Paper>
   );
 }
 
-export default Landing;
+export default Blogs;

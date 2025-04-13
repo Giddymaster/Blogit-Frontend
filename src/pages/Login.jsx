@@ -22,7 +22,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-
   const mutation = useMutation({
     mutationFn: async () => {
       const res = await axios.post("http://localhost:4000/login", {
@@ -51,7 +50,7 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    mutation.mutate(); 
+    mutation.mutate();
   };
 
   return (
