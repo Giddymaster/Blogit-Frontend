@@ -1,7 +1,7 @@
 import { Typography, Button, Container, Paper, ButtonGroup } from "@mui/material";
 import Navbar from "../components/Navbar";
+import bgImg from "../assets/bgimg.jpg";
 import { Link } from "react-router-dom";
-import bgImg from "../assets/bg.jpeg";
 
 function Landing() {
   return (
@@ -11,63 +11,26 @@ function Landing() {
       minHeight: "100vh",
       backgroundImage: `url(${bgImg})`,
       backgroundSize: "cover",
-      backgroundPosition: "center",
+      backgroundPosition: "top",
       backgroundRepeat: "no-repeat",
       position: "relative",
-      color: "#fff", 
     }}
     >
       <Navbar />
 
       <Container maxWidth="md" sx={{ my: 4, textAlign: "center" }}>
-        <Typography variant="h1" gutterBottom>
+        <Typography variant="h1" gutterBottom color="white">
           Create, collaborate, and scale your blogs and docs.
         </Typography>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom color="white">
           Discover stories, thinking, and expertise from writers on any topic.
         </Typography>
-        <ButtonGroup variant="text" aria-label="Large button group" sx={{ marginTop: 5 }} color="white">
-  <Button sx={{ px: 4, py: 2, fontSize: "2rem", fontWeight: 600 }}>Read</Button>
-  <Button sx={{ px: 4, py: 2, fontSize: "2rem", fontWeight: 600 }}>Write</Button>
-  <Button sx={{ px: 4, py: 2, fontSize: "2rem", fontWeight: 600 }}>Publish</Button>
-</ButtonGroup>
+        <ButtonGroup variant="text" aria-label="Large button group" sx={{ marginTop: 5, marginLeft: 3, background: "white" }} component={Link} to= "/signup">
+          <Button sx={{ px: 4, py: 2, fontSize: "1.2rem", fontWeight: 600, color:"rgba(212, 51, 14, 0.7)"}}>Star Writing</Button>
+          <Button sx={{ px: 4, py: 2, fontSize: "1.2rem", fontWeight: 600, color:"rgba(212, 51, 14, 0.7)" }}>Explore stories</Button>
+        </ButtonGroup>
 
       </Container>
-
-      {/* <Container maxWidth="lg">
-        <Typography variant="h4" gutterBottom>
-          Trending on BlogIt
-        </Typography>
-
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <Typography variant="subtitle2">Author Name</Typography>
-          <Typography variant="h6">Sample Blog Post </Typography>
-          <Typography variant="body2" color="text.secondary">
-            5 min read
-          </Typography>
-        </Paper>
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <Typography variant="subtitle2">Author Name</Typography>
-          <Typography variant="h6">Sample Blog Post </Typography>
-          <Typography variant="body2" color="text.secondary">
-            5 min read
-          </Typography>
-        </Paper>
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <Typography variant="subtitle2">Author Name</Typography>
-          <Typography variant="h6">Sample Blog Post </Typography>
-          <Typography variant="body2" color="text.secondary">
-            5 min read
-          </Typography>
-        </Paper>
-        <Paper elevation={3} sx={{ p: 2 }}>
-          <Typography variant="subtitle2">Author Name</Typography>
-          <Typography variant="h6">Sample Blog Post </Typography>
-          <Typography variant="body2" color="text.secondary">
-            5 min read
-          </Typography>
-        </Paper>
-      </Container> */}
     </Paper>
   );
 }

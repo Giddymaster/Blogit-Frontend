@@ -54,7 +54,7 @@ function Navbar() {
 
           {!user ? (
             <Box sx={{ display: "flex", gap: 1 }}>
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -65,7 +65,7 @@ function Navbar() {
               >
                 <SearchIcon />
                 <InputBase placeholder="Search…" sx={{ ml: 1 }} />
-              </Box>
+              </Box> */}
 
               <Button
                 variant="outlined"

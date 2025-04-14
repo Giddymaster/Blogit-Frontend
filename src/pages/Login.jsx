@@ -39,7 +39,7 @@ function Login() {
       }
     },
     onError: (error) => {
-      if (error.response) {
+      if (axios.isAxiosError(error  )) {
         setError(error.response.data.message || "Login failed");
       } else {
         setError("Something went wrong. Please try again.");
