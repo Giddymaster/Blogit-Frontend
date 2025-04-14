@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import apiUrl from "../utils/apiUrl";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +41,7 @@ function SignUp() {
   const { isPending, mutate } = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async () => {
-      const response = await axios.post(`https://blogit-frontend-gilt.vercel.app/register`, {
+      const response = await axios.post(`${apiUrl}/signup`, {
         firstName,
         lastName,
         emailAddress,

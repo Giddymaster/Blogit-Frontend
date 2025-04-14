@@ -13,6 +13,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "../store/useStore";
+import apiUrl from "../utils/apiUrl";
 
 function Login() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Login() {
 
   const {isPending, mutate} = useMutation({
     mutationFn: async () => {
-      const res = await axios.post("https://blogit-frontend-gilt.vercel.app//login", {
+      const res = await axios.post(`${apiUrl}/login`, {
         identifier,
         password,
       },
