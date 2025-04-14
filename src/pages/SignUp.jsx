@@ -10,6 +10,7 @@ import {
   IconButton,
   Alert,
   Paper,
+  Container,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
@@ -72,39 +73,38 @@ function SignUp() {
   };
 
   return (
+    <Box sx={{ width: "100vw", bgcolor: "#f5f5f5" }}>
+    <Container >
+    <Navbar />
     <Paper
       component="form"
       onSubmit={handleSubmit}
-      elevation={4}
+      elevation={3}
       sx={{
         p: 4,
-        borderRadius: 3,
+        borderRadius: 2,
         display: "flex",
         flexDirection: "column",
-        gap: 2,
-        width: "100vw",
+        gap: 3,
         backgroundColor: "#fff",
       }}
     >
-      <Navbar />
-      <Typography variant="h4" component="h1" textAlign="center" mb={1}>
-        Welcome to BlogIt.
-      </Typography>
-      <Typography variant="subtitle1" textAlign="center" mb={3}>
-        Sign up to read more blogs and publish captivating stories.
-      </Typography>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flexDirection="column"
-        width={600}
-      >
+      <Box textAlign="center" mb={2}>
+          <Typography variant="h4" component="h1" fontWeight="bold" color="primary">
+            Join BlogIt Today
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary" mt={1}>
+          Sign up to read more blogs and publish captivating stories.
+          </Typography>
+      </Box>
+      
+      <Box>
         <TextField
           label="First Name"
           variant="outlined"
           fullWidth
           required
+          margin="normal"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
@@ -113,6 +113,7 @@ function SignUp() {
           variant="outlined"
           fullWidth
           required
+          margin="normal"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
@@ -121,6 +122,7 @@ function SignUp() {
           variant="outlined"
           fullWidth
           required
+          margin="normal"
           value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
         />
@@ -129,11 +131,12 @@ function SignUp() {
           variant="outlined"
           fullWidth
           required
+          margin="normal"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
 
-        <FormControl fullWidth variant="outlined">
+        <FormControl fullWidth variant="outlined" margin="normal">
           <InputLabel htmlFor="password">Password</InputLabel>
           <OutlinedInput
             id="password"
@@ -152,7 +155,7 @@ function SignUp() {
           />
         </FormControl>
 
-        <FormControl fullWidth variant="outlined">
+        <FormControl fullWidth variant="outlined" margin="normal">
           <InputLabel htmlFor="confirm-password">Confirm Password</InputLabel>
           <OutlinedInput
             id="confirm-password"
@@ -195,6 +198,8 @@ function SignUp() {
         </Typography>
       </Box>
     </Paper>
+    </Container>
+    </Box>
   );
 }
 

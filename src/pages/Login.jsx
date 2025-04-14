@@ -8,8 +8,8 @@ import {
   CircularProgress,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "../store/useStore";
@@ -115,6 +115,13 @@ function Login() {
           >
             {isPending ? <CircularProgress size={24} /> : "Login"}
           </Button>
+
+          <Typography textAlign="center" mt={2}>
+            Dont have an account?{" "}
+          <Button component={Link} to="/signup" size="small">
+            Sign Up
+          </Button>
+        </Typography>
         </Paper>
       </Box>
     </Paper>
