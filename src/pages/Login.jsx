@@ -27,13 +27,16 @@ function Login() {
       const res = await axios.post("http://localhost:4000/login", {
         identifier,
         password,
+      },
+      {
+        withCredentials: true,
       });
       return res.data;
     },
     onSuccess: (data) => {
       if (data.user) {
         setUserInformation(data.user);
-        navigate("/");
+        navigate("/blogs");
       } else {
         setError(data.message || "Wrong emailAddress or password");
       }
