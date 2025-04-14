@@ -40,7 +40,7 @@ function SignUp() {
   const { isPending, mutate } = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async () => {
-      const response = await axios.post(`http://localhost:4000/register`, {
+      const response = await axios.post(`https://blogit-frontend-gilt.vercel.app/register`, {
         firstName,
         lastName,
         emailAddress,

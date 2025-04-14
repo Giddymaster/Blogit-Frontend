@@ -24,7 +24,7 @@ function Login() {
 
   const {isPending, mutate} = useMutation({
     mutationFn: async () => {
-      const res = await axios.post("http://localhost:4000/login", {
+      const res = await axios.post("https://blogit-frontend-gilt.vercel.app//login", {
         identifier,
         password,
       },
