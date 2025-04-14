@@ -41,7 +41,7 @@ function SignUp() {
   const { isPending, mutate } = useMutation({
     mutationKey: ["register-user"],
     mutationFn: async () => {
-      const response = await axios.post(`${apiUrl}/register`, {
+      const response = await axios.post(`${apiUrl}/signup`, {
         firstName,
         lastName,
         emailAddress,
