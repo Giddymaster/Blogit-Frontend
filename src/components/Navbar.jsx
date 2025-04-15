@@ -99,6 +99,7 @@ function Navbar() {
                   component={Link}
                   to="/posts"
                   sx={{ cursor: "pointer" }}
+                  
                 >
                   Write Blog
                 </Typography>

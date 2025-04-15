@@ -1,4 +1,3 @@
-// src/store/useStore.js
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -16,7 +15,7 @@ const useUserStore = create(
       },
     }),
     {
-      name: "local-storage", // localStorage key
+      name: "local-storage", 
     },
   ),
 );

@@ -33,7 +33,7 @@ function Write() {
     formData.append("image", featuredImage);
 
     try {
-      const res = await axios.post(`${apiUrl}/posts`, formData, {
+      const res = await axios.post(`${apiUrl}/writeblog`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
