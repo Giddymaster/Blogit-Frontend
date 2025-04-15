@@ -2,8 +2,6 @@
 import {
   Box, Button, TextField, Typography, InputLabel, FormControl,
 } from "@mui/material";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import axios from "axios";
 import{ useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -80,28 +78,16 @@ function Write() {
           multiline
         />
 
-        <Box mt={3}>
-          <Typography variant="subtitle1" gutterBottom>
-            Body
-          </Typography>
-          <ReactQuill
-            value={body}
-            onChange={setBody}
-            modules={{
-              toolbar: [
-                [{ header: [1, 2, 3, false] }],
-                ["bold", "italic", "underline"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["link", "code-block", "blockquote"],
-              ],
-            }}
-            formats={[
-              "header", "bold", "italic", "underline",
-              "list", "bullet", "link", "code-block", "blockquote",
-            ]}
-            style={{ height: "300px", marginBottom: "40px" }}
-          />
-        </Box>
+<TextField
+          label="Excerpt"
+          placeholder="Write Blog body here"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          fullWidth
+          required
+          margin="normal"
+          multiline
+        />
 
         <Button variant="contained" color="primary" type="submit">
           Publish
