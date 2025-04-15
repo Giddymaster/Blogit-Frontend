@@ -1,24 +1,56 @@
-import {
-  Container,
-  Typography,
-} from "@mui/material";
-import Navbar from "../components/Navbar";
+import { Box, Typography, Card, CardContent, CardMedia, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import apiUrl from "../utils/apiUrl"; 
 
-function Blogs() {
-  
+function Blogs(){
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await axios.get(`${apiUrl}/blogs`);
+        setBlogs(res.data);
+      } catch (e) {
+        console.log(e, "Failed to fetch blogs");
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   return (
-    <>
-    <Navbar/>
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
-        Discover Stories
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        My Blogs
       </Typography>
-      <Typography variant="subtitle1" color="text.secondary" mb={4}>
-        Explore the latest articles from our community of writers
-      </Typography>
-    </Container>
-    </>
+      <Grid container spacing={3}>
+        {blogs.map((blog) => (
+          <Grid item xs={12} sm={6} md={4} key={blog.id}>
+            <Card>
+              {blog.featuredImage && (
+                <CardMedia
+                  component="img"
+                  height="200"
+                  image={blog.featuredImage}
+                  alt={blog.title}
+                />
+              )}
+              <CardContent>
+                <Typography variant="h6" component={Link} to={`/posts/${blog.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+                  {blog.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {blog.excerpt.slice(0, 100)}...
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
+};
 
-}
 export default Blogs;

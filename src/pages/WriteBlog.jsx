@@ -33,7 +33,7 @@ function WriteBlog() {
       });
 
       if (res.status === 201) {
-        navigate(`/posts/${"/blog"}`);
+        navigate(`/blog"}`);
       }
     } catch (error) {
       console.error("Error submitting post:", error);
