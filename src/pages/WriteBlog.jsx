@@ -1,45 +1,39 @@
 
-import {
-  Box, Button, TextField, Typography, InputLabel, FormControl,
-} from "@mui/material";
+import {Box, Button, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiUrl from "../utils/apiUrl";
+import Navbar from '../components/Navbar'
 
 function WriteBlog() {
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [body, setBody] = useState("");
-  const [featuredImage, setFeaturedImage] = useState(null);
+  // const [featuredImage, setFeaturedImage] = useState(null);
   const navigate = useNavigate();
 
-  const handleImageChange = (e) => {
-    setFeaturedImage(e.target.files[0]);
-  };
+  // const handleImageChange = (e) => {
+  //   setFeaturedImage(e.target.files[0]);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !excerpt || !body || !featuredImage) {
+    if (!title || !excerpt || !body) {
       alert("Please fill all fields.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("excerpt", excerpt);
-    formData.append("body", body);
-    formData.append("image", featuredImage);
-
     try {
-      const res = await axios.post(`${apiUrl}/writeblog`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
+      const res = await axios.post(`${apiUrl}/writeblog`, {
+      title,
+      excerpt,
+      body,      
       });
 
       if (res.status === 201) {
-        navigate(`/posts/${res.data.id}`);
+        navigate(`/posts/${"/blog"}`);
       }
     } catch (error) {
       console.error("Error submitting post:", error);
@@ -47,15 +41,17 @@ function WriteBlog() {
   };
 
   return (
+    <>
+    <Navbar />
     <Box sx={{ maxWidth: 800, mx: "auto", mt: 4, p: 2 }}>
       <Typography variant="h4" gutterBottom>
-        Create a New Post
+        Write a New Blog
       </Typography>
       <form onSubmit={handleSubmit}>
-        <FormControl fullWidth margin="normal">
+        {/* <FormControl fullWidth margin="normal">
           <InputLabel shrink>Featured Image</InputLabel>
           <input type="file" accept="image/*" onChange={handleImageChange} required />
-        </FormControl>
+        </FormControl> */}
 
         <TextField
           label="Title"
@@ -78,8 +74,8 @@ function WriteBlog() {
           multiline
         />
 
-<TextField
-          label="Excerpt"
+        <TextField
+          label="blog contents"
           placeholder="Write Blog body here"
           value={body}
           onChange={(e) => setBody(e.target.value)}
@@ -94,6 +90,8 @@ function WriteBlog() {
         </Button>
       </form>
     </Box>
+
+    </>
   );
 };
 
