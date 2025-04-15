@@ -7,7 +7,7 @@ import{ useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiUrl from "../utils/apiUrl";
 
-function Write() {
+function WriteBlog() {
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [body, setBody] = useState("");
@@ -97,4 +97,4 @@ function Write() {
   );
 };
 
-export default Write;
+export default WriteBlog;
