@@ -11,7 +11,7 @@ function Blogs(){
     const fetchBlogs = async () => {
       try {
         const res = await axios.get(`${apiUrl}/blogs`);
-        setBlogs(res.data);
+        setBlogs(res.data.blogs);
       } catch (e) {
         console.log(e, "Failed to fetch blogs");
       }
