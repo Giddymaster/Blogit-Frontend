@@ -97,10 +97,10 @@ function Navbar() {
                 <Typography
                   variant="button"
                   component={Link}
-                  to="/read"
+                  to="/posts"
                   sx={{ cursor: "pointer" }}
                 >
-                  Read
+                  Write Blog
                 </Typography>
                 <Typography
                   variant="button"
