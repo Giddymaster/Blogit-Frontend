@@ -28,10 +28,12 @@ function Login() {
       const res = await axios.post(`${apiUrl}/login`, {
         identifier,
         password,
-      },
-      {
-        withCredentials: true,
-      });
+      }
+      // ,
+      // {
+      //   withCredentials: true,
+      // }
+      );
       return res.data;
     },
     onSuccess: (data) => {

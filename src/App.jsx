@@ -3,7 +3,8 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Blogs from "./pages/Blogs";
-import Read from "./pages/Read"
+import Read from "./pages/Read";
+import WritePage from "./pages/WritePage";
 import { Publish } from "@mui/icons-material";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="/read" element={<Read />} />
+      <Route path="/posts" element={<WritePage />} />
       <Route path="/publish" element={<Publish />} />
       <Route path="/blogs" element={<Blogs />} />
     </Routes>
