@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import apiUrl from '../utils/apiUrl';
+import Navbar from '../components/Navbar';
 
 export default function Blogs() {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ export default function Blogs() {
 
   return (
     <Box sx={{ backgroundColor: '#f0f2f5', minHeight: '100vh', py: 4, px: 2 }}>
+      <Navbar />
       <Typography
         variant="h3"
         gutterBottom
