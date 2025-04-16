@@ -19,7 +19,7 @@ export default function Blogs() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(`${apiUrl}`/blogs, {
+        const response = await fetch(`${apiUrl}/blogs`, {
           method: 'GET',
           credentials: 'include',
         });
