@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Navbar from "../components/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
 import useUserStore from "../store/useStore";
@@ -17,11 +17,18 @@ import apiUrl from "../utils/apiUrl";
 
 function Login() {
   const navigate = useNavigate();
+  const user = useUserStore((state) => state.user);
   const setUserInformation = useUserStore((state) => state.setUserInformation);
 
-  const [identifier, setidentifier] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      navigate("/blogs");
+    }
+  }, [user, navigate]);
 
   const {isPending, mutate} = useMutation({
     mutationFn: async () => {
@@ -46,7 +53,8 @@ function Login() {
     },
     onError: (error) => {
       if (axios.isAxiosError(error  )) {
-        setError(error.response.data.message || "Login failed");
+        const message = error.response.data.message || "Login failed";
+        setError(message);
       } else {
         setError("Something went wrong. Please try again.");
       }
@@ -92,7 +100,7 @@ function Login() {
             label="username or email address"
             margin="normal"
             value={identifier}
-            onChange={(e) => setidentifier(e.target.value)}
+            onChange={(e) => setIdentifier(e.target.value)}
             required
           />
 
@@ -123,7 +131,7 @@ function Login() {
           </Button>
 
           <Typography textAlign="center" mt={2}>
-            Dont have an account?{" "}
+            Don`t have an account?{" "}
           <Button component={Link} to="/signup" size="small">
             Sign Up
           </Button>

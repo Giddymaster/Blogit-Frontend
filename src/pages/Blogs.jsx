@@ -1,131 +1,173 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
   Grid,
-  CircularProgress,
-  Button,
   Card,
-  CardContent,
-  CardActions
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
-import NavBar from "../components/Navbar";
-import apiUrl from "../utils/apiUrl";
+  CardMedia,
+  Avatar,
+  Button,
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import apiUrl from '../utils/apiUrl';
 
-function Blogs() {
-  const [fetchError, setFetchError] = useState(null);
+export default function Blogs() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["my-blogs"],
-    queryFn: async () => {
-      const response = await axios.get(`${apiUrl}/blogs`, {
-        withCredentials: true,
-      });
-      return response.data.blogs;
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: async (id) => {
-      await axios.delete(`${apiUrl}/blogs/${id}`, {
-        withCredentials: true,
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["my-blogs"]);
-    },
-    onError: (error) => {
-      console.error("Error deleting blog:", error);
-      alert("Failed to delete blog. Please try again.");
-    },
-  });
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (error) {
-      if (axios.isAxiosError(error)) {
-        const serverMessage =
-          error?.response?.data?.message || "An error occurred";
-        setFetchError(serverMessage);
-      } else {
-        setFetchError("Something went wrong. Please try again later.");
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch(`${apiUrl}`/blogs, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setBlogs(data.blogs);
+        } else {
+          console.error(data.message);
+        }
+      } catch (err) {
+        console.error("Error fetching blogs:", err);
+      } finally {
+        setLoading(false);
       }
-    }
-  }, [error]);
+    };
 
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-        <Typography variant="h6" sx={{ marginLeft: 2 }}>
-          Loading please wait...
-        </Typography>
-      </Box>
-    );
-  }
-
-  if (isError) {
-    return (
-      <Typography variant="h2" fontWeight={400} mt={10} textAlign="center">
-        {fetchError}
-      </Typography>
-    );
-  }
+    fetchBlogs();
+  }, []);
 
   return (
-    <>
-      <NavBar />
+    <Box sx={{ backgroundColor: '#f0f2f5', minHeight: '100vh', py: 4, px: 2 }}>
+      <Typography
+        variant="h3"
+        gutterBottom
+        align="center"
+        sx={{ fontWeight: 600, color: '#333' }}
+      >
+        Discover Inspiring Stories
+      </Typography>
 
-      <Box display="flex" justifyContent="space-between" alignItems="center" mt={4} px={3}>
-        <Typography variant="h4">My Blogs</Typography>
-        <Button variant="contained" onClick={() => navigate("/writeblog")}>Create New Blog</Button>
-      </Box>
+      {loading ? (
+        <Typography align="center">Loading blogs...</Typography>
+      ) : (
+        <Grid container spacing={4} justifyContent="center">
+          {blogs.map((blog) => (
+            <Grid item xs={12} md={9} key={blog.id}>
+              <Card
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  backgroundColor: '#ffffff',
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                  boxShadow: 4,
+                  height: 300,
+                  transition: 'transform 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.01)',
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    flex: 2,
+                    p: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <Box>
+                    <Typography
+                      variant="h5"
+                      sx={{ fontWeight: 'bold', color: '#2c3e50' }}
+                      gutterBottom
+                    >
+                      {blog.title}
+                    </Typography>
 
-      {data && data.length === 0 && (
-        <Box textAlign="center" mt={6}>
-          <Typography
-            variant="h5"
-            fontWeight={500}
-            gutterBottom
-          >
-            No blog content yet.
-          </Typography>
-          <Button variant="contained" onClick={() => navigate("/writeblog")}>Create New Blog</Button>
-        </Box>
+                    <Box
+                      sx={{
+                        maxHeight: 120,
+                        overflow: 'hidden',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 4,
+                        WebkitBoxOrient: 'vertical',
+                        color: 'text.secondary',
+                        fontSize: 14,
+                      }}
+                    >
+                      {blog.excerpt}
+                    </Box>
+                  </Box>
+
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mt={2}
+                  >
+                    <Box display="flex" alignItems="center">
+                      <Avatar src={blog.author.avatar || ''} sx={{ mr: 1 }}>
+                        {!blog.author.avatar && blog.author.username[0]?.toUpperCase()}
+                      </Avatar>
+                      <Box>
+                        <Typography variant="subtitle2">
+                          {blog.author.username}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Updated on {new Date(blog.updatedAt).toLocaleDateString()}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Button
+                      variant="contained"
+                      onClick={() => navigate(`/blogs/${blog.id}`)}
+                      sx={{ textTransform: 'none', backgroundColor: '#1976d2' }}
+                    >
+                      Read More
+                    </Button>
+                  </Box>
+                </Box>
+
+                <CardMedia
+                  component="img"
+                  image={blog.featuredImage}
+                  alt={blog.title}
+                  sx={{
+                    width: '40%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </Card>
+
+              <Box
+                sx={{
+                  mt: 1,
+                  px: 1,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  color: 'text.secondary',
+                  fontSize: 14,
+                  maxWidth: '75%',
+                  mx: 'auto',
+                }}
+              >
+                {blog.excerpt.length > 200 ? blog.excerpt.slice(200) : ''}
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
       )}
-
-      <Grid container spacing={3} mt={4} px={3}>
-        {data && data.map((item) => (
-          <Grid item xs={12} md={6} lg={4} key={item.id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{item.title}</Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </Typography>
-                <Typography variant="body2" mt={1}>{item.excerpt}</Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => navigate(`/writeblog/${item.id}`)}>Edit</Button>
-                <Button size="small" color="error" onClick={() => deleteMutation.mutate(item.id)}>Delete</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </>
+    </Box>
   );
 }
-
-export default Blogs;
