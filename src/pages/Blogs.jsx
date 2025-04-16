@@ -51,7 +51,7 @@ export default function Blogs() {
         align="center"
         sx={{ fontWeight: 600, color: '#333' }}
       >
-        Discover Inspiring Stories
+        Read inspiring stories from our community
       </Typography>
 
       {loading ? (

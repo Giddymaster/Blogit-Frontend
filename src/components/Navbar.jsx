@@ -102,14 +102,7 @@ function Navbar() {
                 >
                   Write Blog
                 </Typography>
-                <Typography
-                  variant="button"
-                  component={Link}
-                  to="/publish"
-                  sx={{ cursor: "pointer" }}
-                >
-                  Publish
-                </Typography>
+                
                 <Typography
                   variant="button"
                   component={Link}
@@ -117,6 +110,15 @@ function Navbar() {
                   sx={{ cursor: "pointer" }}
                 >
                   Blogs
+                </Typography>
+
+                <Typography
+                  variant="button"
+                  component={Link}
+                  to="/profile"
+                  sx={{ cursor: "pointer" }}
+                >
+                  Profile
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={2}>
