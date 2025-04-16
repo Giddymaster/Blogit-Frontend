@@ -124,7 +124,7 @@ export default function Blogs() {
                           {blog.author.username}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          Updated on {new Date(blog.updatedAt).toLocaleDateString()}
+                          Updated on {new Date(blog.updatedAt)}
                         </Typography>
                       </Box>
                     </Box>
