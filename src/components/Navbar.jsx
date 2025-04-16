@@ -16,6 +16,7 @@ import logo from "../assets/logo.png";
 import SearchIcon from "@mui/icons-material/Search";
 import useUserStore from "../store/useStore";
 import { useState } from "react";
+import MyBlogs from "../pages/myBlogs";
 
 function Navbar() {
   const user = useUserStore((state) => state.user);
@@ -140,6 +141,7 @@ function Navbar() {
                 </IconButton>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                   <MenuItem disabled>Hello, {user.firstName}</MenuItem>
+                  <MenuItem onClick={handleLogout}><MyBlogs/></MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </Box>
