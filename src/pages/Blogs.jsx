@@ -12,7 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import NavBar from "./components/NavBar";
+import NavBar from "../components/Navbar";
 import { apiUrl } from "../utils/apiUrl";
 
 function Blogs() {
