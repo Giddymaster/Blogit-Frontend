@@ -23,7 +23,7 @@ function Blogs() {
   const { isLoading, isError, error, data } = useQuery({
     queryKey: ["my-blogs"],
     queryFn: async () => {
-      const response = await axios.get(`${apiUrl}/blogs/mine`, {
+      const response = await axios.get(`${apiUrl}/blogs`, {
         withCredentials: true,
       });
       return response.data.blogs;
