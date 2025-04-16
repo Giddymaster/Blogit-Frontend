@@ -17,7 +17,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import useUserStore from "../store/useStore";
 import { useState } from "react";
 import axios from "axios";
-import { apiUrl } from "../utils/apiUrl";
+import apiUrl from "../utils/apiUrl";
 
 function Navbar() {
   const user = useUserStore((state) => state.user);
