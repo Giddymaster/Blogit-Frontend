@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Landing from './pages/Landing';
 import Blogs from './pages/Blogs';
 import WriteBlog from './pages/WriteBlog';
-import BlogEntry from './pages/BlogEntry';
+import Profile from './pages/Profile';
+
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/writeblog" element={<WriteBlog />} />
-      <Route path="/blog/:blogId" element={<BlogEntry />} />
+      <Route path="/profile" element= {<Profile />}/>
     </Routes>
   );
 }

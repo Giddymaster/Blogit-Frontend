@@ -12,7 +12,7 @@ import Navbar from '../components/Navbar';
 import apiUrl from '../utils/apiUrl';
 import useUserStore from '../store/useStore';
 
-const Profile = () => {
+function Profile() {
   const user = useUserStore((state) => state.user);
   const [personalInfo, setPersonalInfo] = useState({
     firstName: '',
