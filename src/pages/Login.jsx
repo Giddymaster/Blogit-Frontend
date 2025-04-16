@@ -29,10 +29,10 @@ function Login() {
         identifier,
         password,
       }
-      // ,
-      // {
-      //   withCredentials: true,
-      // }
+      ,
+      {
+        withCredentials: true,
+      }
       );
       return res.data;
     },

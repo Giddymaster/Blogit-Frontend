@@ -111,7 +111,7 @@ function Blogs() {
                 <Typography variant="body2" mt={1}>{item.excerpt}</Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => navigate(`/edit/${item.id}`)}>Edit</Button>
+                <Button size="small" onClick={() => navigate(`/writeblog/${item.id}`)}>Edit</Button>
                 <Button size="small" color="error" onClick={() => deleteMutation.mutate(item.id)}>Delete</Button>
               </CardActions>
             </Card>
