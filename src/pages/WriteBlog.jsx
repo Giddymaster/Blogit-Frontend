@@ -26,6 +26,9 @@ function WriteBlog() {
         title,
         excerpt,
         body,
+      },
+      {
+        withCredentials: true,
       });
 
       if (res.status === 201) {
@@ -33,7 +36,6 @@ function WriteBlog() {
       }
     } catch (error) {
       console.error("Error submitting post:", error);
-      alert("Error submitting post. Please try again.");
     } finally {
       setLoading(false);
     }
