@@ -105,8 +105,8 @@ function MyBlogs() {
     <>
       <NavBar />
       <Box textAlign="center" mt={4}>
-        <Button variant="contained" component={Link} to="/compose">
-          Compose New Blog
+        <Button variant="contained" component={Link} to="/blogs/mine">
+          Write New Blog
         </Button>
       </Box>
 
