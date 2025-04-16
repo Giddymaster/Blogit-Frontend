@@ -16,6 +16,8 @@ import logo from "../assets/logo.png";
 import SearchIcon from "@mui/icons-material/Search";
 import useUserStore from "../store/useStore";
 import { useState } from "react";
+import axios from "axios";
+import { apiUrl } from "../config";
 
 function Navbar() {
   const user = useUserStore((state) => state.user);
@@ -27,7 +29,8 @@ function Navbar() {
   const open = Boolean(anchorEl);
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await axios.post(`${apiUrl}/logout`, {}, { withCredentials: true });
     removeUserInformation();
     handleMenuClose();
   };

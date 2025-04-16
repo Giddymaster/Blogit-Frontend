@@ -1,6 +1,5 @@
-import { Typography, Button, Container, Paper, ButtonGroup } from "@mui/material";
+import { Typography, Container, Paper } from "@mui/material";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
 import bgImg from "../assets/bg.jpeg";
 
 function Blogs() {

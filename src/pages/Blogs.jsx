@@ -39,15 +39,21 @@ function Blogs() {
     onSuccess: () => {
       queryClient.invalidateQueries(["my-blogs"]);
     },
+    onError: (error) => {
+      console.error("Error deleting blog:", error);
+      alert("Failed to delete blog. Please try again.");
+    },
   });
 
   useEffect(() => {
-    if (axios.isAxiosError(error)) {
-      const serverMessage =
-        error?.response?.data?.message || "An error occurred";
-      setFetchError(serverMessage);
-    } else {
-      setFetchError("Something went wrong. Please try again later.");
+    if (error) {
+      if (axios.isAxiosError(error)) {
+        const serverMessage =
+          error?.response?.data?.message || "An error occurred";
+        setFetchError(serverMessage);
+      } else {
+        setFetchError("Something went wrong. Please try again later.");
+      }
     }
   }, [error]);
 

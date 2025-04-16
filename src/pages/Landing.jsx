@@ -25,9 +25,21 @@ function Landing() {
         <Typography variant="h4" gutterBottom color="white">
           Discover stories, thinking, and expertise from writers on any topic.
         </Typography>
-        <ButtonGroup variant="text" aria-label="Large button group" sx={{ marginTop: 5,marginBottom: 5, marginLeft: 3, background: "white" }} component={Link} to= "/signup">
-          <Button sx={{ px: 4, py: 2, fontSize: "1.2rem", fontWeight: 600, color:"rgba(212, 51, 14, 0.7)"}}>Star Writing</Button>
-          <Button sx={{ px: 4, py: 2, fontSize: "1.2rem", fontWeight: 600, color:"rgba(212, 51, 14, 0.7)" }}>Explore stories</Button>
+        <ButtonGroup variant="text" aria-label="Large button group" sx={{ marginTop: 5, marginBottom: 5, marginLeft: 3, background: "white" }}>
+          <Button
+            sx={{ px: 4, py: 2, fontSize: "1.2rem", fontWeight: 600, color: "rgba(212, 51, 14, 0.7)" }}
+            component={Link}
+            to="/signup"
+          >
+            Start Writing
+          </Button>
+          <Button
+            sx={{ px: 4, py: 2, fontSize: "1.2rem", fontWeight: 600, color: "rgba(212, 51, 14, 0.7)" }}
+            component={Link}
+            to="/blogs"
+          >
+            Explore Stories
+          </Button>
         </ButtonGroup>
 
       </Container>
