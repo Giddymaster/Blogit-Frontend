@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import NavBar from "../components/Navbar";
-import { apiUrl } from "../utils/apiUrl";
+import apiUrl from "../utils/apiUrl";
 
 function Blogs() {
   const [fetchError, setFetchError] = useState(null);
