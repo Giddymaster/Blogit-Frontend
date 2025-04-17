@@ -7,46 +7,55 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Delete, Edit, Save, Cancel } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import apiUrl from "../utils/apiUrl";
 import NavBar from "../components/Navbar";
+import useBlogsStore from "../store/useBlogsStore";
 
 function MyBlogs() {
-  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({ title: "", excerpt: "" });
 
-  const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["my-blogs"],
-    queryFn: async () => {
+  const myBlogs = useBlogsStore((state) => state.myBlogs);
+  const setMyBlogs = useBlogsStore((state) => state.setMyBlogs);
+  const removeBlog = useBlogsStore((state) => state.removeBlog);
+
+  const fetchMyBlogs = async () => {
+    try {
       const response = await axios.get(`${apiUrl}/blogs/myn`, {
         withCredentials: true,
       });
-      return response.data.blogs;
-    },
-  });
+
+      if (response.status === 200) {
+        setMyBlogs(response.data.blogs);
+      }
+    } catch (error) {
+      console.error("Error fetching my blogs:", error);
+      setFetchError("Failed to load your blogs. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (error) {
-      if (axios.isAxiosError(error)) {
-        const serverMessage =
-          error.response?.data.message || "An error occurred";
-        setFetchError(serverMessage);
-      } else {
-        setFetchError("Something went wrong. Please try again later.");
-      }
-    }
-  }, [error]);
+    fetchMyBlogs();
+  }, []);
 
   const deleteMutation = useMutation({
     mutationFn: (id) =>
       axios.delete(`${apiUrl}/blogs/myn/${id}`, { withCredentials: true }),
-    onSuccess: () => queryClient.invalidateQueries(["my-blogs"]),
+    onSuccess: (_, id) => {
+      removeBlog(id);
+    },
+    onError: () => {
+      alert("Failed to delete blog. Please try again.");
+    },
   });
 
   const updateMutation = useMutation({
@@ -55,9 +64,12 @@ function MyBlogs() {
         withCredentials: true,
       }),
     onSuccess: () => {
+      fetchMyBlogs(); // Refresh after successful update
       setEditingId(null);
       setEditData({ title: "", excerpt: "" });
-      queryClient.invalidateQueries(["my-blogs"]);
+    },
+    onError: () => {
+      alert("Failed to update blog. Please try again.");
     },
   });
 
@@ -87,13 +99,13 @@ function MyBlogs() {
       >
         <CircularProgress />
         <Typography variant="h6" sx={{ ml: 2 }}>
-          Loading please wait...
+          Loading your blogs...
         </Typography>
       </Box>
     );
   }
 
-  if (isError) {
+  if (fetchError) {
     return (
       <Typography variant="h5" mt={10} textAlign="center" color="error">
         {fetchError}
@@ -110,7 +122,7 @@ function MyBlogs() {
         </Button>
       </Box>
 
-      {data && data.length === 0 ? (
+      {myBlogs.length === 0 ? (
         <Box textAlign="center" mt={6}>
           <Typography variant="h4" gutterBottom>
             You haven’t written any blogs yet.
@@ -118,7 +130,7 @@ function MyBlogs() {
         </Box>
       ) : (
         <Grid container alignItems="center" direction="column" mt={6} spacing={3}>
-          {data.map((blog) => (
+          {myBlogs.map((blog) => (
             <Grid
               item
               xs={11}

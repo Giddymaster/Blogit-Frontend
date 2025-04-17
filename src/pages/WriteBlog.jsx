@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiUrl from "../utils/apiUrl";
 import Navbar from "../components/Navbar";
+import useBlogsStore from "../store/useBlogsStore";
 
 function WriteBlog() {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ function WriteBlog() {
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const addBlog = useBlogsStore((state) => state.addBlog);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ function WriteBlog() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${apiUrl}/blogs/myn`, {
+      const res = await axios.post(`${apiUrl}/blogs`, {
         title,
         excerpt,
         body,
@@ -32,6 +34,7 @@ function WriteBlog() {
       });
 
       if (res.status === 201) {
+        addBlog(res.data.blog); 
         navigate("/blogs"); 
       }
     } catch (error) {
