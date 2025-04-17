@@ -45,13 +45,13 @@ function MyBlogs() {
 
   const deleteMutation = useMutation({
     mutationFn: (id) =>
-      axios.delete(`${apiUrl}/blogs/${id}`, { withCredentials: true }),
+      axios.delete(`${apiUrl}/blogs/myn/${id}`, { withCredentials: true }),
     onSuccess: () => queryClient.invalidateQueries(["my-blogs"]),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, updated }) =>
-      axios.put(`${apiUrl}/blogs/${id}`, updated, {
+      axios.put(`${apiUrl}/blogs/myn/${id}`, updated, {
         withCredentials: true,
       }),
     onSuccess: () => {
