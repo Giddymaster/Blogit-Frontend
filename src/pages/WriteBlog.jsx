@@ -22,7 +22,7 @@ function WriteBlog() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${apiUrl}/blogs/mine`, {
+      const res = await axios.post(`${apiUrl}/blogs/myn`, {
         title,
         excerpt,
         body,
