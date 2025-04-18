@@ -64,7 +64,7 @@ function MyBlogs() {
         withCredentials: true,
       }),
     onSuccess: () => {
-      fetchMyBlogs(); // Refresh after successful update
+      fetchMyBlogs();
       setEditingId(null);
       setEditData({ title: "", excerpt: "" });
     },
