@@ -115,7 +115,7 @@ function Navbar() {
                 <Typography
                   variant="button"
                   component={Link}
-                  to="/myblogs"
+                  to="/blogs/myn"
                   sx={{ cursor: "pointer" }}
                 >
                   My-Blogs
