@@ -11,10 +11,14 @@ import {
 import { useNavigate } from 'react-router-dom';
 import apiUrl from '../utils/apiUrl';
 import Navbar from '../components/Navbar';
+import useBlogsStore from '../store/useBlogsStore';
 
 export default function Blogs() {
   const navigate = useNavigate();
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useBlogsStore((state) => ({
+    blogs: state.blogs,
+    setBlogs: state.setBlogs
+  }));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

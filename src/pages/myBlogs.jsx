@@ -6,6 +6,7 @@ import {
   Button,
   TextField,
   IconButton,
+  Snackbar,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
@@ -21,6 +22,9 @@ function MyBlogs() {
   const [fetchError, setFetchError] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({ title: "", excerpt: "" });
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [snackBarMessage, setSnackBarMessage] = useState("");
+  const [snackBarSeverity, setSnackBarSeverity] = useState("success");
 
   const myBlogs = useBlogsStore((state) => state.myBlogs);
   const setMyBlogs = useBlogsStore((state) => state.setMyBlogs);
@@ -31,13 +35,11 @@ function MyBlogs() {
       const response = await axios.get(`${apiUrl}/blogs/myn`, {
         withCredentials: true,
       });
-
       if (response.status === 200) {
         setMyBlogs(response.data.blogs);
       }
     } catch (error) {
-      console.error("Error fetching my blogs:", error);
-      setFetchError("Failed to load your blogs. Please try again.");
+      setFetchError("Failed to load your blogs. Please try again.", error);
     } finally {
       setIsLoading(false);
     }
@@ -52,9 +54,14 @@ function MyBlogs() {
       axios.delete(`${apiUrl}/blogs/myn/${id}`, { withCredentials: true }),
     onSuccess: (_, id) => {
       removeBlog(id);
+      setSnackBarMessage("Blog deleted successfully.");
+      setSnackBarSeverity("success");
+      setSnackBarOpen(true);
     },
     onError: () => {
-      alert("Failed to delete blog. Please try again.");
+      setSnackBarMessage("Failed to delete blog. Please try again.");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
     },
   });
 
@@ -65,11 +72,16 @@ function MyBlogs() {
       }),
     onSuccess: () => {
       fetchMyBlogs();
+      setSnackBarMessage("Blog updated successfully.");
+      setSnackBarSeverity("success");
+      setSnackBarOpen(true);
       setEditingId(null);
       setEditData({ title: "", excerpt: "" });
     },
     onError: () => {
-      alert("Failed to update blog. Please try again.");
+      setSnackBarMessage("Failed to update blog. Please try again.");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
     },
   });
 
@@ -79,12 +91,22 @@ function MyBlogs() {
   };
 
   const handleSave = (id) => {
+    if (!editData.title || !editData.excerpt) {
+      setSnackBarMessage("Title and excerpt cannot be empty.");
+      setSnackBarSeverity("error");
+      setSnackBarOpen(true);
+      return;
+    }
     updateMutation.mutate({ id, updated: editData });
   };
 
   const handleCancel = () => {
     setEditingId(null);
     setEditData({ title: "", excerpt: "" });
+  };
+
+  const handleSnackBarClose = () => {
+    setSnackBarOpen(false);
   };
 
   if (isLoading) {
@@ -198,6 +220,14 @@ function MyBlogs() {
           ))}
         </Grid>
       )}
+
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackBarClose}
+        message={snackBarMessage}
+        severity={snackBarSeverity}
+      />
     </>
   );
 }

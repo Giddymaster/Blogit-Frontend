@@ -13,7 +13,7 @@ function WriteBlog() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const addBlog = useBlogsStore((state) => state.addBlog);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -35,7 +35,7 @@ function WriteBlog() {
 
       if (res.status === 201) {
         addBlog(res.data.blog); 
-        navigate("/blogs"); 
+        navigate("/blogs" ); 
       }
     } catch (error) {
       console.error("Error submitting post:", error);
