@@ -115,10 +115,10 @@ function Navbar() {
                 <Typography
                   variant="button"
                   component={Link}
-                  to="/profile"
+                  to="/myblogs"
                   sx={{ cursor: "pointer" }}
                 >
-                  Profile
+                  My-Blogs
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={2}>
@@ -140,7 +140,7 @@ function Navbar() {
                 </IconButton>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                   <MenuItem disabled>Hello, {user.firstName}</MenuItem>
-                  <MenuItem component={Link} to="/blogs/myn">MyBlogs</MenuItem>
+                  <MenuItem component={Link} to="/profile">Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </Box>
