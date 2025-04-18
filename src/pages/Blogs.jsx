@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -9,6 +8,8 @@ import {
   Button,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import apiUrl from '../utils/apiUrl';
 import Navbar from '../components/Navbar';
 import useBlogsStore from '../store/useBlogsStore';
@@ -17,27 +18,19 @@ export default function Blogs() {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useBlogsStore((state) => ({
     blogs: state.blogs,
-    setBlogs: state.setBlogs
+    setBlogs: state.setBlogs,
   }));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(`${apiUrl}/blogs`, {
-          method: 'GET',
-          credentials: 'include',
+        const response = await axios.get(`${apiUrl}/blogs`, {
+          withCredentials: true,
         });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setBlogs(data.blogs);
-        } else {
-          console.error(data.message);
-        }
+        setBlogs(response.data.blogs);
       } catch (err) {
-        console.error("Error fetching blogs:", err);
+        console.error('Error fetching blogs:', err?.response?.data?.message || err.message);
       } finally {
         setLoading(false);
       }
@@ -121,14 +114,16 @@ export default function Blogs() {
                   >
                     <Box display="flex" alignItems="center">
                       <Avatar src={blog.author.avatar || ''} sx={{ mr: 1 }}>
-                        {!blog.author.avatar && blog.author.username[0]?.toUpperCase()}
+                        {!blog.author.avatar &&
+                          blog.author.username[0]?.toUpperCase()}
                       </Avatar>
                       <Box>
                         <Typography variant="subtitle2">
                           {blog.author.username}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          Updated on {new Date(blog.updatedAt).toLocaleDateString()}
+                          Updated on{' '}
+                          {new Date(blog.updatedAt).toLocaleDateString()}
                         </Typography>
                       </Box>
                     </Box>
