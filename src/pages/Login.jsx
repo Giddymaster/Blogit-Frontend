@@ -32,7 +32,7 @@ function Login() {
 
   const {isPending, mutate} = useMutation({
     mutationFn: async () => {
-      const res = await axios.post(`${apiUrl}/login`, {
+      const res = await axios.post(`${apiUrl}/auth/login`, {
         identifier,
         password,
       }
