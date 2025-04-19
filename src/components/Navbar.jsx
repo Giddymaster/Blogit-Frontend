@@ -102,7 +102,7 @@ function Navbar() {
                 >
                   Write Blog
                 </Typography>
-                
+
                 <Typography
                   variant="button"
                   component={Link}
@@ -140,7 +140,9 @@ function Navbar() {
                 </IconButton>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleMenuClose}>
                   <MenuItem disabled>Hello, {user.firstName}</MenuItem>
-                  <MenuItem component={Link} to="/profile">Profile</MenuItem>
+                  <MenuItem component={Link} to="/profile">
+                    Profile
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </Box>

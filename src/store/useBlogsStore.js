@@ -6,10 +6,8 @@ const useBlogsStore = create((set) => ({
   blogs: [],
   myBlogs: [],
 
-
   setBlogs: (blogs) => set({ blogs }),
   setMyBlogs: (myBlogs) => set({ myBlogs }),
-
 
   addBlog: (newBlog) =>
     set((state) => ({
@@ -17,13 +15,11 @@ const useBlogsStore = create((set) => ({
       myBlogs: [newBlog, ...state.myBlogs],
     })),
 
-
   removeBlog: (blogId) =>
     set((state) => ({
       blogs: state.blogs.filter((blog) => blog.id !== blogId),
       myBlogs: state.myBlogs.filter((blog) => blog.id !== blogId),
     })),
-
 
   refreshBlogs: async () => {
     try {
@@ -35,7 +31,6 @@ const useBlogsStore = create((set) => ({
       console.error("Error refreshing blogs:", error);
     }
   },
-
 
   refreshMyBlogs: async () => {
     try {

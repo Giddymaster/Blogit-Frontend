@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Typography,
   CircularProgress,
   Avatar,
   CardMedia,
-} from '@mui/material';
-import apiUrl from '../utils/apiUrl';
-import Navbar from '../components/Navbar';
+} from "@mui/material";
+import apiUrl from "../utils/apiUrl";
+import Navbar from "../components/Navbar";
 
 export default function BlogDetail() {
   const { id } = useParams();
@@ -19,7 +19,7 @@ export default function BlogDetail() {
     const fetchBlog = async () => {
       try {
         const res = await fetch(`${apiUrl}/blogs/${id}`, {
-          credentials: 'include',
+          credentials: "include",
         });
         const data = await res.json();
         if (res.ok) {
@@ -28,7 +28,7 @@ export default function BlogDetail() {
           console.error(data.message);
         }
       } catch (error) {
-        console.error('Error fetching blog detail:', error);
+        console.error("Error fetching blog detail:", error);
       } finally {
         setLoading(false);
       }
@@ -54,13 +54,13 @@ export default function BlogDetail() {
   }
 
   return (
-    <Box sx={{ backgroundColor: '#f9f9f9', minHeight: '100vh', px: 3, py: 4 }}>
+    <Box sx={{ backgroundColor: "#f9f9f9", minHeight: "100vh", px: 3, py: 4 }}>
       <Navbar />
       <Typography variant="h3" gutterBottom>
         {blog.title}
       </Typography>
       <Box display="flex" alignItems="center" mb={2}>
-        <Avatar src={blog.author?.avatar || ''} sx={{ mr: 1 }}>
+        <Avatar src={blog.author?.avatar || ""} sx={{ mr: 1 }}>
           {!blog.author?.avatar && blog.author?.username[0]?.toUpperCase()}
         </Avatar>
         <Typography variant="subtitle2">{blog.author?.username}</Typography>
@@ -69,11 +69,16 @@ export default function BlogDetail() {
         component="img"
         image={blog.featuredImage}
         alt={blog.title}
-        sx={{ maxHeight: 400, width: '100%', objectFit: 'cover', borderRadius: 2 }}
+        sx={{
+          maxHeight: 400,
+          width: "100%",
+          objectFit: "cover",
+          borderRadius: 2,
+        }}
       />
       <Typography
         variant="body1"
-        sx={{ mt: 3, whiteSpace: 'pre-wrap', fontSize: '1.1rem' }}
+        sx={{ mt: 3, whiteSpace: "pre-wrap", fontSize: "1.1rem" }}
       >
         {blog.body}
       </Typography>

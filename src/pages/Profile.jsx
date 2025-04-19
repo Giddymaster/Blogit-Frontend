@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -6,25 +6,25 @@ import {
   Typography,
   Divider,
   Container,
-} from '@mui/material';
-import axios from 'axios';
-import Navbar from '../components/Navbar';
-import apiUrl from '../utils/apiUrl';
-import useUserStore from '../store/useStore';
+} from "@mui/material";
+import axios from "axios";
+import Navbar from "../components/Navbar";
+import apiUrl from "../utils/apiUrl";
+import useUserStore from "../store/useStore";
 
 function Profile() {
   const user = useUserStore((state) => state.user);
   const [personalInfo, setPersonalInfo] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    username: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
   });
 
   const [passwordInfo, setPasswordInfo] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,10 +32,10 @@ function Profile() {
   useEffect(() => {
     if (user) {
       setPersonalInfo({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        username: user.username || '',
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+        username: user.username || "",
       });
     }
   }, [user]);
@@ -53,10 +53,10 @@ function Profile() {
     setLoading(true);
     try {
       await axios.put(`${apiUrl}/users/me/personal`, personalInfo);
-      alert('Personal information updated successfully!');
+      alert("Personal information updated successfully!");
     } catch (err) {
       console.error(err);
-      alert('Error updating personal info.');
+      alert("Error updating personal info.");
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ function Profile() {
   const updatePassword = async (e) => {
     e.preventDefault();
     if (passwordInfo.newPassword !== passwordInfo.confirmPassword) {
-      alert('New passwords do not match.');
+      alert("New passwords do not match.");
       return;
     }
 
@@ -74,10 +74,10 @@ function Profile() {
         currentPassword: passwordInfo.currentPassword,
         newPassword: passwordInfo.newPassword,
       });
-      alert('Password updated successfully!');
+      alert("Password updated successfully!");
     } catch (err) {
       console.error(err);
-      alert('Password update failed.');
+      alert("Password update failed.");
     }
   };
 
@@ -190,6 +190,6 @@ function Profile() {
       </Container>
     </>
   );
-};
+}
 
 export default Profile;

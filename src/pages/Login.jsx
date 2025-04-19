@@ -30,16 +30,17 @@ function Login() {
     }
   }, [user, navigate]);
 
-  const {isPending, mutate} = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: async () => {
-      const res = await axios.post(`${apiUrl}/auth/login`, {
-        identifier,
-        password,
-      }
-      ,
-      {
-        withCredentials: true,
-      }
+      const res = await axios.post(
+        `${apiUrl}/auth/login`,
+        {
+          identifier,
+          password,
+        },
+        {
+          withCredentials: true,
+        },
       );
       return res.data;
     },
@@ -52,7 +53,7 @@ function Login() {
       }
     },
     onError: (error) => {
-      if (axios.isAxiosError(error  )) {
+      if (axios.isAxiosError(error)) {
         const message = error.response.data.message || "Login failed";
         setError(message);
       } else {
@@ -61,11 +62,11 @@ function Login() {
     },
   });
 
-  function handleSubmit(e){
+  function handleSubmit(e) {
     e.preventDefault();
     setError("");
     mutate();
-  };
+  }
 
   return (
     <Paper sx={{ width: "100vw" }}>
@@ -132,10 +133,10 @@ function Login() {
 
           <Typography textAlign="center" mt={2}>
             Don`t have an account?{" "}
-          <Button component={Link} to="/signup" size="small">
-            Sign Up
-          </Button>
-        </Typography>
+            <Button component={Link} to="/signup" size="small">
+              Sign Up
+            </Button>
+          </Typography>
         </Paper>
       </Box>
     </Paper>

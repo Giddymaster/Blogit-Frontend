@@ -75,131 +75,145 @@ function SignUp() {
 
   return (
     <Box sx={{ width: "100vw", bgcolor: "#f5f5f5" }}>
-    <Container >
-    <Navbar />
-    <Paper
-      component="form"
-      onSubmit={handleSubmit}
-      elevation={3}
-      sx={{
-        p: 4,
-        borderRadius: 2,
-        display: "flex",
-        flexDirection: "column",
-        gap: 3,
-        backgroundColor: "#fff",
-      }}
-    >
-      <Box textAlign="center" mb={2}>
-          <Typography variant="h4" component="h1" fontWeight="bold" color="primary">
-            Join BlogIt Today
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" mt={1}>
-          Sign up to read more blogs and publish captivating stories.
-          </Typography>
-      </Box>
-      
-      <Box>
-        <TextField
-          label="First Name"
-          variant="outlined"
-          fullWidth
-          required
-          margin="normal"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <TextField
-          label="Last Name"
-          variant="outlined"
-          fullWidth
-          required
-          margin="normal"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <TextField
-          label="Email Address"
-          variant="outlined"
-          fullWidth
-          required
-          margin="normal"
-          value={emailAddress}
-          onChange={(e) => setEmailAddress(e.target.value)}
-        />
-        <TextField
-          label="Username"
-          variant="outlined"
-          fullWidth
-          required
-          margin="normal"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-
-        <FormControl fullWidth variant="outlined" margin="normal">
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <OutlinedInput
-            id="password"
-            type={showPassword ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={handleShowPassword} edge="end">
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-            required
-          />
-        </FormControl>
-
-        <FormControl fullWidth variant="outlined" margin="normal">
-          <InputLabel htmlFor="confirm-password">Confirm Password</InputLabel>
-          <OutlinedInput
-            id="confirm-password"
-            type={showconfirmedPassword ? "text" : "password"}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={handleshowconfirmedPassword} edge="end">
-                  {showconfirmedPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Confirm Password"
-            required
-          />
-        </FormControl>
-
-        {error && (
-          <Alert variant="filled" severity="error">
-            {error}
-          </Alert>
-        )}
-
-        <Button
-          variant="contained"
-          fullWidth
-          type="submit"
-          disabled={isPending}
-          sx={{ py: 1.5, mt: 1 }}
+      <Container>
+        <Navbar />
+        <Paper
+          component="form"
+          onSubmit={handleSubmit}
+          elevation={3}
+          sx={{
+            p: 4,
+            borderRadius: 2,
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+            backgroundColor: "#fff",
+          }}
         >
-          {isPending ? "Please wait ..." : "Sign Up"}
-        </Button>
+          <Box textAlign="center" mb={2}>
+            <Typography
+              variant="h4"
+              component="h1"
+              fontWeight="bold"
+              color="primary"
+            >
+              Join BlogIt Today
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary" mt={1}>
+              Sign up to read more blogs and publish captivating stories.
+            </Typography>
+          </Box>
 
-        <Typography textAlign="center" mt={2}>
-          Already have an account?{" "}
-          <Button component={Link} to="/login" size="small">
-            Login
-          </Button>
-        </Typography>
-      </Box>
-    </Paper>
-    </Container>
+          <Box>
+            <TextField
+              label="First Name"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <TextField
+              label="Last Name"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <TextField
+              label="Email Address"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={emailAddress}
+              onChange={(e) => setEmailAddress(e.target.value)}
+            />
+            <TextField
+              label="Username"
+              variant="outlined"
+              fullWidth
+              required
+              margin="normal"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <OutlinedInput
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleShowPassword} edge="end">
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+                required
+              />
+            </FormControl>
+
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <InputLabel htmlFor="confirm-password">
+                Confirm Password
+              </InputLabel>
+              <OutlinedInput
+                id="confirm-password"
+                type={showconfirmedPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleshowconfirmedPassword}
+                      edge="end"
+                    >
+                      {showconfirmedPassword ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Confirm Password"
+                required
+              />
+            </FormControl>
+
+            {error && (
+              <Alert variant="filled" severity="error">
+                {error}
+              </Alert>
+            )}
+
+            <Button
+              variant="contained"
+              fullWidth
+              type="submit"
+              disabled={isPending}
+              sx={{ py: 1.5, mt: 1 }}
+            >
+              {isPending ? "Please wait ..." : "Sign Up"}
+            </Button>
+
+            <Typography textAlign="center" mt={2}>
+              Already have an account?{" "}
+              <Button component={Link} to="/login" size="small">
+                Login
+              </Button>
+            </Typography>
+          </Box>
+        </Paper>
+      </Container>
     </Box>
   );
 }

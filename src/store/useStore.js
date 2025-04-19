@@ -15,7 +15,7 @@ const useUserStore = create(
       },
     }),
     {
-      name: "local-storage", 
+      name: "local-storage",
     },
   ),
 );

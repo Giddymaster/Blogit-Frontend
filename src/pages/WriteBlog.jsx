@@ -1,4 +1,11 @@
-import { Box, Button, TextField, Typography, Alert, CircularProgress } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +22,7 @@ function WriteBlog() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { addBlog, refreshBlogs } = useBlogsStore();
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -27,19 +34,25 @@ function WriteBlog() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${apiUrl}/blogs`, {
-        title,
-        excerpt,
-        body,
-        featuredImage: featuredImage || "https://via.placeholder.com/600x400",
-      }, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${apiUrl}/blogs`,
+        {
+          title,
+          excerpt,
+          body,
+          featuredImage: featuredImage || "https://via.placeholder.com/600x400",
+        },
+        {
+          withCredentials: true,
+        },
+      );
 
       if (res.status === 201) {
         addBlog(res.data.blog);
-        await refreshBlogs(); 
-        navigate("/blogs", { state: { success: "Blog published successfully!" } });
+        await refreshBlogs();
+        navigate("/blogs", {
+          state: { success: "Blog published successfully!" },
+        });
       }
     } catch (error) {
       console.error("Error submitting post:", error);
@@ -56,7 +69,7 @@ function WriteBlog() {
         <Typography variant="h4" gutterBottom>
           Write a New Blog
         </Typography>
-        
+
         {error && (
           <Alert severity="error" sx={{ mb: 3 }}>
             {error}
@@ -111,7 +124,7 @@ function WriteBlog() {
             sx={{ mb: 3 }}
           />
 
-          <Box sx={{ display: 'flex', gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 2 }}>
             <Button
               variant="contained"
               color="primary"
@@ -121,7 +134,7 @@ function WriteBlog() {
             >
               {loading ? "Publishing..." : "Publish"}
             </Button>
-            
+
             <Button
               variant="outlined"
               color="secondary"

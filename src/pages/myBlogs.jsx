@@ -23,7 +23,11 @@ import useBlogsStore from "../store/useBlogsStore";
 function MyBlogs() {
   const navigate = useNavigate();
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ title: "", excerpt: "", body: "" });
+  const [editData, setEditData] = useState({
+    title: "",
+    excerpt: "",
+    body: "",
+  });
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -33,7 +37,7 @@ function MyBlogs() {
   const { myBlogs, setMyBlogs, removeBlog, refreshMyBlogs } = useBlogsStore();
 
   const { isLoading, error } = useQuery({
-    queryKey: ['myBlogs'],
+    queryKey: ["myBlogs"],
     queryFn: async () => {
       const response = await axios.get(`${apiUrl}/blogs/mine`, {
         withCredentials: true,
@@ -97,7 +101,7 @@ function MyBlogs() {
   };
 
   const handleSnackbarClose = () => {
-    setSnackbar(prev => ({ ...prev, open: false }));
+    setSnackbar((prev) => ({ ...prev, open: false }));
   };
 
   if (isLoading) {
@@ -172,7 +176,10 @@ function MyBlogs() {
                           rows={2}
                           value={editData.excerpt}
                           onChange={(e) =>
-                            setEditData({ ...editData, excerpt: e.target.value })
+                            setEditData({
+                              ...editData,
+                              excerpt: e.target.value,
+                            })
                           }
                           sx={{ mb: 2 }}
                         />
@@ -192,7 +199,11 @@ function MyBlogs() {
                         <Typography variant="h6" gutterBottom>
                           {blog.title}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          gutterBottom
+                        >
                           {blog.excerpt}
                         </Typography>
                         <Typography variant="body2" sx={{ mt: 2 }}>
@@ -263,7 +274,7 @@ function MyBlogs() {
         <Alert
           onClose={handleSnackbarClose}
           severity={snackbar.severity}
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
           {snackbar.message}
         </Alert>
