@@ -17,11 +17,10 @@ import useBlogsStore from '../store/useBlogsStore';
 
 export default function Blogs() {
   const navigate = useNavigate();
-  const [blogs, setBlogs] = useBlogsStore((state) => ({
-    blogs: state.blogs,
-    setBlogs: state.setBlogs,
-  }));
   const [loading, setLoading] = useState(true);
+  const blogs = useBlogsStore((state) => state.blogs);
+  const setBlogs = useBlogsStore((state) => state.setBlogs);
+  
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -39,7 +38,7 @@ export default function Blogs() {
     };
 
     fetchBlogs();
-  }, []);
+  }, [setBlogs]);
 
   const handleWriteBlog = () => {
     navigate('/writeblog');
