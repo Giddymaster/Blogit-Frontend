@@ -33,7 +33,7 @@ export default function Blogs() {
           "Error fetching blogs:",
           err?.response?.data?.message || err.message,
         );
-        setBlogs([]);
+        setBlogs([]);                       
       } finally {
         setLoading(false);
       }
