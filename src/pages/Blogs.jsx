@@ -7,6 +7,7 @@ import {
   Avatar,
   Button,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -28,9 +29,10 @@ export default function Blogs() {
         const response = await axios.get(`${apiUrl}/blogs`, {
           withCredentials: true,
         });
-        setBlogs(response.data.blogs);
+        setBlogs(response.data.blogs || []);
       } catch (err) {
         console.error('Error fetching blogs:', err?.response?.data?.message || err.message);
+        setBlogs([]);
       } finally {
         setLoading(false);
       }
@@ -39,21 +41,63 @@ export default function Blogs() {
     fetchBlogs();
   }, []);
 
+  const handleWriteBlog = () => {
+    navigate('/writeblog');
+  };
+
   return (
     <Box sx={{ backgroundColor: '#f0f2f5', minHeight: '100vh', py: 4, px: 2 }}>
       <Navbar />
-      <Typography
+      
+
+      {loading ? (
+       <Box display="flex" justifyContent="center" alignItems="center" height="60vh">
+       <CircularProgress />
+     </Box>
+      )
+      : blogs.length === 0 ? (
+        <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '60vh',
+          textAlign: 'center',
+        }}
+      >
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          No Blogs Published Yet
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 4, maxWidth: '500px' }}>
+          Be the first to share your story! Create a blog post to inspire others.
+        </Typography>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleWriteBlog}
+          sx={{
+            px: 4,
+            py: 1.5,
+            fontSize: '1rem',
+            borderRadius: '8px',
+          }}
+        >
+          Write Your First Blog
+        </Button>
+      </Box>
+    ) :
+       
+      (
+        <>
+        <Typography
         variant="h3"
         gutterBottom
         align="center"
         sx={{ fontWeight: 600, color: '#333' }}
       >
         Read inspiring stories from our community
-      </Typography>
-
-      {loading ? (
-        <Typography align="center">Loading blogs...</Typography>
-      ) : (
+        </Typography>
         <Grid container spacing={4} justifyContent="center">
           {blogs.map((blog) => (
             <Grid item xs={12} md={9} key={blog.id}>
@@ -168,6 +212,7 @@ export default function Blogs() {
             </Grid>
           ))}
         </Grid>
+        </>
       )}
     </Box>
   );
