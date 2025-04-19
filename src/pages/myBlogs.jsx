@@ -5,7 +5,6 @@ import {
   CircularProgress,
   Button,
   TextField,
-  IconButton,
   Snackbar,
   Alert,
   Card,
@@ -138,7 +137,7 @@ function MyBlogs() {
         {myBlogs.length === 0 ? (
           <Box textAlign="center" mt={6}>
             <Typography variant="h5" gutterBottom>
-              You haven't published any blogs yet
+              You haven`t published any blogs yet
             </Typography>
             <Button
               variant="outlined"
