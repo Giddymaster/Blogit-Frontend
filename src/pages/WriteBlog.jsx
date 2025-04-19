@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography, Alert, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,15 +10,18 @@ function WriteBlog() {
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [body, setBody] = useState("");
+  const [featuredImage, setFeaturedImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const addBlog = useBlogsStore((state) => state.addBlog);
+  const { addBlog, refreshBlogs } = useBlogsStore();
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
 
     if (!title || !excerpt || !body) {
-      alert("Please fill all fields.");
+      setError("Please fill all required fields.");
       return;
     }
 
@@ -28,17 +31,19 @@ function WriteBlog() {
         title,
         excerpt,
         body,
-      },
-      {
+        featuredImage: featuredImage || "https://via.placeholder.com/600x400",
+      }, {
         withCredentials: true,
       });
 
       if (res.status === 201) {
-        addBlog(res.data.blog); 
-        navigate("/blogs" ); 
+        addBlog(res.data.blog);
+        await refreshBlogs(); 
+        navigate("/blogs", { state: { success: "Blog published successfully!" } });
       }
     } catch (error) {
       console.error("Error submitting post:", error);
+      setError(error.response?.data?.message || "Failed to publish blog");
     } finally {
       setLoading(false);
     }
@@ -51,6 +56,13 @@ function WriteBlog() {
         <Typography variant="h4" gutterBottom>
           Write a New Blog
         </Typography>
+        
+        {error && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            {error}
+          </Alert>
+        )}
+
         <form onSubmit={handleSubmit}>
           <TextField
             label="Title"
@@ -60,40 +72,64 @@ function WriteBlog() {
             fullWidth
             required
             margin="normal"
+            sx={{ mb: 2 }}
           />
 
           <TextField
             label="Excerpt"
-            placeholder="Enter excerpt here..."
+            placeholder="A short preview of your blog..."
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             fullWidth
             required
             margin="normal"
             multiline
+            rows={3}
+            sx={{ mb: 2 }}
           />
 
           <TextField
-            label="Blog Contents"
-            placeholder="Write blog body here"
+            label="Featured Image URL (optional)"
+            placeholder="Paste an image URL here"
+            value={featuredImage}
+            onChange={(e) => setFeaturedImage(e.target.value)}
+            fullWidth
+            margin="normal"
+            sx={{ mb: 2 }}
+          />
+
+          <TextField
+            label="Blog Content"
+            placeholder="Write your blog content here"
             value={body}
             onChange={(e) => setBody(e.target.value)}
             fullWidth
             required
             margin="normal"
             multiline
-            rows={6}
+            rows={10}
+            sx={{ mb: 3 }}
           />
 
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={loading}
-            sx={{ mt: 2 }}
-          >
-            {loading ? "Publishing..." : "Publish"}
-          </Button>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={loading}
+              startIcon={loading ? <CircularProgress size={20} /> : null}
+            >
+              {loading ? "Publishing..." : "Publish"}
+            </Button>
+            
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => navigate(-1)}
+            >
+              Cancel
+            </Button>
+          </Box>
         </form>
       </Box>
     </>

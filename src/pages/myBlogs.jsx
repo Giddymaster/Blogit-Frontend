@@ -7,94 +7,86 @@ import {
   TextField,
   IconButton,
   Snackbar,
+  Alert,
+  Card,
+  CardContent,
+  CardActions,
 } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { useState, useEffect } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import axios from "axios";
-import { Delete, Edit, Save, Cancel } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Delete, Edit, Save, Cancel, Article } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 import apiUrl from "../utils/apiUrl";
-import NavBar from "../components/Navbar";
+import Navbar from "../components/Navbar";
 import useBlogsStore from "../store/useBlogsStore";
 
 function MyBlogs() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(null);
+  const navigate = useNavigate();
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ title: "", excerpt: "" });
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [snackBarMessage, setSnackBarMessage] = useState("");
-  const [snackBarSeverity, setSnackBarSeverity] = useState("success");
+  const [editData, setEditData] = useState({ title: "", excerpt: "", body: "" });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
-  const myBlogs = useBlogsStore((state) => state.myBlogs);
-  const setMyBlogs = useBlogsStore((state) => state.setMyBlogs);
-  const removeBlog = useBlogsStore((state) => state.removeBlog);
+  const { myBlogs, setMyBlogs, removeBlog, refreshMyBlogs } = useBlogsStore();
 
-  const fetchMyBlogs = async () => {
-    try {
-      const response = await axios.get(`${apiUrl}/blogs/myn`, {
+  const { isLoading, error } = useQuery({
+    queryKey: ['myBlogs'],
+    queryFn: async () => {
+      const response = await axios.get(`${apiUrl}/blogs/mine`, {
         withCredentials: true,
       });
-      if (response.status === 200) {
-        setMyBlogs(response.data.blogs);
-      }
-    } catch (error) {
-      setFetchError("Failed to load your blogs. Please try again.", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMyBlogs();
-  }, []);
+      setMyBlogs(response.data.blogs);
+      return response.data;
+    },
+  });
 
   const deleteMutation = useMutation({
     mutationFn: (id) =>
-      axios.delete(`${apiUrl}/blogs/myn/${id}`, { withCredentials: true }),
+      axios.delete(`${apiUrl}/blogs/${id}`, { withCredentials: true }),
     onSuccess: (_, id) => {
       removeBlog(id);
-      setSnackBarMessage("Blog deleted successfully.");
-      setSnackBarSeverity("success");
-      setSnackBarOpen(true);
+      showSnackbar("Blog deleted successfully", "success");
     },
     onError: () => {
-      setSnackBarMessage("Failed to delete blog. Please try again.");
-      setSnackBarSeverity("error");
-      setSnackBarOpen(true);
+      showSnackbar("Failed to delete blog", "error");
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, updated }) =>
-      axios.put(`${apiUrl}/blogs/myn/${id}`, updated, {
+      axios.patch(`${apiUrl}/blogs/${id}`, updated, {
         withCredentials: true,
       }),
     onSuccess: () => {
-      fetchMyBlogs();
-      setSnackBarMessage("Blog updated successfully.");
-      setSnackBarSeverity("success");
-      setSnackBarOpen(true);
+      refreshMyBlogs();
+      showSnackbar("Blog updated successfully", "success");
       setEditingId(null);
-      setEditData({ title: "", excerpt: "" });
     },
     onError: () => {
-      setSnackBarMessage("Failed to update blog. Please try again.");
-      setSnackBarSeverity("error");
-      setSnackBarOpen(true);
+      showSnackbar("Failed to update blog", "error");
     },
   });
 
+  const showSnackbar = (message, severity) => {
+    setSnackbar({ open: true, message, severity });
+  };
+
   const handleEdit = (blog) => {
     setEditingId(blog.id);
-    setEditData({ title: blog.title, excerpt: blog.excerpt });
+    setEditData({
+      title: blog.title,
+      excerpt: blog.excerpt,
+      body: blog.body,
+    });
   };
 
   const handleSave = (id) => {
-    if (!editData.title || !editData.excerpt) {
-      setSnackBarMessage("Title and excerpt cannot be empty.");
-      setSnackBarSeverity("error");
-      setSnackBarOpen(true);
+    if (!editData.title || !editData.excerpt || !editData.body) {
+      showSnackbar("All fields are required", "error");
       return;
     }
     updateMutation.mutate({ id, updated: editData });
@@ -102,132 +94,181 @@ function MyBlogs() {
 
   const handleCancel = () => {
     setEditingId(null);
-    setEditData({ title: "", excerpt: "" });
+    setEditData({ title: "", excerpt: "", body: "" });
   };
 
-  const handleSnackBarClose = () => {
-    setSnackBarOpen(false);
+  const handleSnackbarClose = () => {
+    setSnackbar(prev => ({ ...prev, open: false }));
   };
 
   if (isLoading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
+      <Box display="flex" justifyContent="center" mt={4}>
         <CircularProgress />
-        <Typography variant="h6" sx={{ ml: 2 }}>
-          Loading your blogs...
-        </Typography>
       </Box>
     );
   }
 
-  if (fetchError) {
+  if (error) {
     return (
-      <Typography variant="h5" mt={10} textAlign="center" color="error">
-        {fetchError}
-      </Typography>
+      <Alert severity="error" sx={{ m: 2 }}>
+        {error.message}
+      </Alert>
     );
   }
 
   return (
     <>
-      <NavBar />
-      <Box textAlign="center" mt={4}>
-        <Button variant="contained" component={Link} to="/blogs/myn">
-          Write New Blog
-        </Button>
+      <Navbar />
+      <Box sx={{ p: 3 }}>
+        <Box textAlign="center" mb={4}>
+          <Typography variant="h4" gutterBottom>
+            My Blog Posts
+          </Typography>
+          <Button
+            variant="contained"
+            component={Link}
+            to="/writeblog"
+            startIcon={<Article />}
+          >
+            Create New Blog
+          </Button>
+        </Box>
+
+        {myBlogs.length === 0 ? (
+          <Box textAlign="center" mt={6}>
+            <Typography variant="h5" gutterBottom>
+              You haven't published any blogs yet
+            </Typography>
+            <Button
+              variant="outlined"
+              component={Link}
+              to="/writeblog"
+              sx={{ mt: 2 }}
+            >
+              Start Writing
+            </Button>
+          </Box>
+        ) : (
+          <Grid container spacing={3}>
+            {myBlogs.map((blog) => (
+              <Grid item xs={12} md={6} key={blog.id}>
+                <Card>
+                  <CardContent>
+                    {editingId === blog.id ? (
+                      <>
+                        <TextField
+                          label="Title"
+                          fullWidth
+                          value={editData.title}
+                          onChange={(e) =>
+                            setEditData({ ...editData, title: e.target.value })
+                          }
+                          sx={{ mb: 2 }}
+                        />
+                        <TextField
+                          label="Excerpt"
+                          fullWidth
+                          multiline
+                          rows={2}
+                          value={editData.excerpt}
+                          onChange={(e) =>
+                            setEditData({ ...editData, excerpt: e.target.value })
+                          }
+                          sx={{ mb: 2 }}
+                        />
+                        <TextField
+                          label="Content"
+                          fullWidth
+                          multiline
+                          rows={4}
+                          value={editData.body}
+                          onChange={(e) =>
+                            setEditData({ ...editData, body: e.target.value })
+                          }
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Typography variant="h6" gutterBottom>
+                          {blog.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                          {blog.excerpt}
+                        </Typography>
+                        <Typography variant="body2" sx={{ mt: 2 }}>
+                          {blog.body.substring(0, 150)}...
+                        </Typography>
+                      </>
+                    )}
+                  </CardContent>
+                  <CardActions>
+                    {editingId === blog.id ? (
+                      <>
+                        <Button
+                          size="small"
+                          startIcon={<Save />}
+                          onClick={() => handleSave(blog.id)}
+                          disabled={updateMutation.isLoading}
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          size="small"
+                          startIcon={<Cancel />}
+                          onClick={handleCancel}
+                        >
+                          Cancel
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          size="small"
+                          startIcon={<Edit />}
+                          onClick={() => handleEdit(blog)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="small"
+                          startIcon={<Delete />}
+                          onClick={() => deleteMutation.mutate(blog.id)}
+                          disabled={deleteMutation.isLoading}
+                          color="error"
+                        >
+                          Delete
+                        </Button>
+                        <Box flexGrow={1} />
+                        <Button
+                          size="small"
+                          onClick={() => navigate(`/blogs/${blog.id}`)}
+                        >
+                          View
+                        </Button>
+                      </>
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
       </Box>
 
-      {myBlogs.length === 0 ? (
-        <Box textAlign="center" mt={6}>
-          <Typography variant="h4" gutterBottom>
-            You haven’t written any blogs yet.
-          </Typography>
-        </Box>
-      ) : (
-        <Grid container alignItems="center" direction="column" mt={6} spacing={3}>
-          {myBlogs.map((blog) => (
-            <Grid
-              item
-              xs={11}
-              md={8}
-              lg={6}
-              key={blog.id}
-              sx={{
-                p: 2,
-                border: "1px solid #ccc",
-                borderRadius: 2,
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              {editingId === blog.id ? (
-                <>
-                  <TextField
-                    label="Title"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    value={editData.title}
-                    onChange={(e) =>
-                      setEditData({ ...editData, title: e.target.value })
-                    }
-                  />
-                  <TextField
-                    label="Excerpt"
-                    fullWidth
-                    multiline
-                    rows={3}
-                    sx={{ mb: 2 }}
-                    value={editData.excerpt}
-                    onChange={(e) =>
-                      setEditData({ ...editData, excerpt: e.target.value })
-                    }
-                  />
-                  <Box display="flex" gap={1}>
-                    <IconButton color="success" onClick={() => handleSave(blog.id)}>
-                      <Save />
-                    </IconButton>
-                    <IconButton color="inherit" onClick={handleCancel}>
-                      <Cancel />
-                    </IconButton>
-                  </Box>
-                </>
-              ) : (
-                <>
-                  <Typography variant="h6">{blog.title}</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ my: 1 }}>
-                    {blog.excerpt}
-                  </Typography>
-                  <Box display="flex" gap={1}>
-                    <IconButton color="primary" onClick={() => handleEdit(blog)}>
-                      <Edit />
-                    </IconButton>
-                    <IconButton
-                      color="error"
-                      onClick={() => deleteMutation.mutate(blog.id)}
-                    >
-                      <Delete />
-                    </IconButton>
-                  </Box>
-                </>
-              )}
-            </Grid>
-          ))}
-        </Grid>
-      )}
-
       <Snackbar
-        open={snackBarOpen}
-        autoHideDuration={4000}
-        onClose={handleSnackBarClose}
-        message={snackBarMessage}
-        severity={snackBarSeverity}
-      />
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
