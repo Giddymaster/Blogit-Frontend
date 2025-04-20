@@ -171,6 +171,7 @@ function MyBlogs() {
                     {editingId === blog.id ? (
                       <>
                         <TextField
+                          id={`title-${blog.id}`}
                           label="Title"
                           fullWidth
                           value={editData.title}
@@ -180,6 +181,7 @@ function MyBlogs() {
                           sx={{ mb: 2 }}
                         />
                         <TextField
+                          id={`excerpt-${blog.id}`}
                           label="Excerpt"
                           fullWidth
                           multiline
@@ -194,6 +196,7 @@ function MyBlogs() {
                           sx={{ mb: 2 }}
                         />
                         <TextField
+                          id={`body-${blog.id}`}
                           label="Content"
                           fullWidth
                           multiline
