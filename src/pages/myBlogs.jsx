@@ -11,6 +11,7 @@ import {
   CardContent,
   CardActions,
 } from "@mui/material";
+import Refresh from "@mui/icons-material/Refresh";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import axios from "axios";
@@ -36,7 +37,7 @@ function MyBlogs() {
 
   const { myBlogs, setMyBlogs, removeBlog, refreshMyBlogs } = useBlogsStore();
 
-  const { isLoading, error } = useQuery({
+  const { isLoading, error, refetch } = useQuery({
     queryKey: ["myBlogs"],
     queryFn: async () => {
       const response = await axios.get(`${apiUrl}/blogs/mine`, {
@@ -114,9 +115,18 @@ function MyBlogs() {
 
   if (error) {
     return (
-      <Alert severity="error" sx={{ m: 2 }}>
+      <Box sx={{ p: 3 }}>
+      <Alert severity="error" sx={{ mb: 2 }}>
         {error.message}
       </Alert>
+      <Button 
+        variant="outlined" 
+        onClick={() => refetch()}
+        startIcon={<Refresh />}
+      >
+        Retry
+      </Button>
+    </Box>
     );
   }
 
